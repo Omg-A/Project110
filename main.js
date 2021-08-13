@@ -1,10 +1,9 @@
-Prediction_1 = "";
-Prediction_2 = "";
+prediction = "";
 
 Webcam.set({
     width:350,
     height:300,
-    file_format:'png',
+    image_format:'png',
     png_quality:90
 });
 
@@ -26,4 +25,30 @@ classifier = ml5.imageClassifier('https://teachablemachine.withgoogle.com/models
 
 function modelLoaded(){
     console.log("The model has been loaded!!!");
+}
+
+function check(){
+    img = document.getElementById("captured_image");
+    classifier.classify(img, gotResult);
+}
+
+function gotResult(error, results){
+    if (error){
+        console.error(error);
+    }else{
+        console.log(results);
+        document.getElementById("result_gesture_name").innerHTML = results[0].label;
+
+        prediction = results[0].label;
+
+        if(results[0].label == "Best"){
+            document.getElementById("update_gesture").innerHTML = "&#128077;";
+        }
+        if(results[0].label == "Victory"){
+            document.getElementById("update_gesture").innerHTML = "&#9996;";
+        }
+        if(results[0].label == "Amazing"){
+            document.getElementById("update_gesture").innerHTML = "&#128076;";
+        }
+    }
 }
